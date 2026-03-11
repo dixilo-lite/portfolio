@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vibe Coded — Projects by Claude</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #141414;
+      --border: #222;
+      --text: #e8e8e8;
+      --muted: #666;
+      --accent: #c8f060;
+      --accent2: #60d0f0;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      /* dot grid background */
+      background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 3rem;
+      background: rgba(13,13,13,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo span { color: var(--muted); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a.active { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 3rem 4rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: var(--sans);
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 .dim { color: var(--muted); }
+    .hero h1 .hi { color: var(--accent); }
+
+    .hero-sub {
+      font-family: var(--mono);
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 480px;
+    }
+
+    .hero-sub strong { color: var(--accent2); font-weight: 400; }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 3rem 1.5rem;
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+
+    .section-header h2 {
+      font-family: var(--sans);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: underline;
+      text-underline-offset: 6px;
+      text-decoration-color: var(--accent);
+    }
+
+    .project-count {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    /* ── PROJECT LIST ── */
+    .project-list {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 3rem 6rem;
+    }
+
+    .project-row {
+      display: grid;
+      grid-template-columns: 180px 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.2s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .project-row:nth-child(1) { animation-delay: 0.4s; }
+    .project-row:nth-child(2) { animation-delay: 0.5s; }
+    .project-row:nth-child(3) { animation-delay: 0.6s; }
+    .project-row:nth-child(4) { animation-delay: 0.7s; }
+    .project-row:nth-child(5) { animation-delay: 0.8s; }
+
+    .project-row:hover .project-thumb { border-color: var(--accent); }
+    .project-row:hover .project-arrow { background: var(--accent); color: #000; transform: rotate(0deg); }
+    .project-row:hover .project-title { color: var(--accent); }
+
+    /* THUMBNAIL */
+    .project-thumb {
+      width: 180px;
+      height: 120px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--surface);
+      flex-shrink: 0;
+      transition: border-color 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Generative SVG art for each project */
+    .thumb-art {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* PROJECT BODY */
+    .project-body {}
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      border: 1px solid rgba(96, 208, 240, 0.25);
+      padding: 0.18rem 0.55rem;
+      border-radius: 3px;
+    }
+
+    .project-title {
+      font-family: var(--sans);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .project-desc {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 460px;
+    }
+
+    /* ARROW */
+    .project-arrow {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      transform: rotate(-45deg);
+    }
+
+
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-left {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    .footer-left strong { color: var(--accent); font-weight: 400; }
+
+    .footer-claude {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .hero, .section-header, .project-list, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .project-row { grid-template-columns: 100px 1fr auto; gap: 1rem; }
+      .project-thumb { width: 100px; height: 70px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">vibe<span>.</span>coded</a>
+    <ul class="nav-links">
+      <li><a href="#projects" class="active">Projects</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <p class="hero-eyebrow">// built with claude · vibe coded</p>
+    <h1>
+      Projects<br/>
+      <span class="dim">made with</span> <span class="hi">AI.</span>
+    </h1>
+    <p class="hero-sub">
+      A collection of websites &amp; apps <strong>vibe coded</strong> with Claude.<br/>
+      No boilerplate. No templates. Just prompts and vibes.
+    </p>
+  </header>
+
+  <!-- PROJECTS SECTION HEADER -->
+  <div class="section-header" id="projects">
+    <h2>Projects</h2>
+    <span class="project-count" id="count-badge">Total: 3</span>
+  </div>
+
+  <!-- PROJECT LIST -->
+  <div class="project-list" id="project-list">
+
+    <!-- Project 1 -->
+    <a class="project-row" href="#" target="_blank">
+      <div class="project-thumb">
+        <svg class="thumb-art" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="180" height="120" fill="#0d0d0d"/>
+          <g stroke="#c8f060" stroke-width="0.6" fill="none" opacity="0.85">
+            <circle cx="90" cy="60" r="8"/>
+            <circle cx="90" cy="60" r="16"/>
+            <circle cx="90" cy="60" r="24"/>
+            <circle cx="90" cy="60" r="32"/>
+            <circle cx="90" cy="60" r="42"/>
+            <line x1="48" y1="18" x2="132" y2="102"/>
+            <line x1="132" y1="18" x2="48" y2="102"/>
+            <line x1="30" y1="60" x2="150" y2="60"/>
+            <line x1="90" y1="10" x2="90" y2="110"/>
+            <ellipse cx="90" cy="60" rx="52" ry="18" transform="rotate(45 90 60)"/>
+            <ellipse cx="90" cy="60" rx="52" ry="18" transform="rotate(-45 90 60)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">AI · Voice</span>
+          <span class="tag">SaaS</span>
+        </div>
+        <p class="project-title">Interview Prep Platform</p>
+        <p class="project-desc">A sleek platform for job interview preparation. Powered by a voice AI agent that asks questions and coaches users in real-time.</p>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+    <!-- Project 2 -->
+    <a class="project-row" href="#" target="_blank">
+      <div class="project-thumb">
+        <svg class="thumb-art" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="180" height="120" fill="#0d0d0d"/>
+          <g stroke="#60d0f0" stroke-width="0.7" fill="none" opacity="0.85">
+            <rect x="30" y="25" width="120" height="70" rx="4"/>
+            <rect x="40" y="35" width="45" height="30" rx="2"/>
+            <rect x="92" y="35" width="50" height="12" rx="2"/>
+            <rect x="92" y="52" width="35" height="12" rx="2"/>
+            <line x1="40" y1="75" x2="140" y2="75"/>
+            <rect x="40" y="80" width="20" height="8" rx="2"/>
+            <rect x="65" y="80" width="20" height="8" rx="2"/>
+            <rect x="90" y="80" width="50" height="8" rx="2"/>
+          </g>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">OCR · AI</span>
+          <span class="tag">Tool</span>
+        </div>
+        <p class="project-title">Image-to-Text Converter</p>
+        <p class="project-desc">Extract text from any image and instantly translate it into 50+ languages. Clean UI with drag-and-drop support.</p>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+    <!-- Project 3 -->
+    <a class="project-row" href="#" target="_blank">
+      <div class="project-thumb">
+        <svg class="thumb-art" viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="180" height="120" fill="#0d0d0d"/>
+          <g fill="none" opacity="0.85">
+            <polyline points="20,95 45,65 70,75 95,40 120,55 155,20" stroke="#c8f060" stroke-width="1.5"/>
+            <polyline points="20,95 45,65 70,75 95,40 120,55 155,20" stroke="#c8f060" stroke-width="8" opacity="0.08"/>
+            <line x1="20" y1="95" x2="155" y2="95" stroke="#333" stroke-width="0.5"/>
+            <line x1="20" y1="75" x2="155" y2="75" stroke="#333" stroke-width="0.5"/>
+            <line x1="20" y1="55" x2="155" y2="55" stroke="#333" stroke-width="0.5"/>
+            <line x1="20" y1="35" x2="155" y2="35" stroke="#333" stroke-width="0.5"/>
+            <circle cx="95" cy="40" r="4" fill="#c8f060" stroke="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="project-body">
+        <div class="project-tags">
+          <span class="tag">Dashboard</span>
+          <span class="tag">Analytics</span>
+        </div>
+        <p class="project-title">Analytics Dashboard</p>
+        <p class="project-desc">A real-time analytics dashboard with live charts, custom date ranges, and exportable reports. Built for speed and clarity.</p>
+      </div>
+      <div class="project-arrow">↗</div>
+    </a>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-left">vibe<strong>.coded</strong> · all projects built with Claude</p>
+    <p class="footer-claude">// claude.ai</p>
+  </footer>
+
+
+</body>
+</html>
