@@ -5,301 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Vibe Coded — Projects by Claude</title>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0d0d0d;
-      --surface: #141414;
-      --border: #222;
-      --text: #e8e8e8;
-      --muted: #666;
-      --accent: #c8f060;
-      --accent2: #60d0f0;
-      --mono: 'Space Mono', monospace;
-      --sans: 'Syne', sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-      /* dot grid background */
-      background-image: radial-gradient(circle, #2a2a2a 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.1rem 3rem;
-      background: rgba(13,13,13,0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 0.95rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-    }
-
-    .nav-logo span { color: var(--muted); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.25rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-    .nav-links a.active { color: var(--accent); }
-
-    /* ── HERO ── */
-    .hero {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 6rem 3rem 4rem;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.1s forwards;
-    }
-
-    .hero-eyebrow {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.25rem;
-    }
-
-    .hero h1 {
-      font-family: var(--sans);
-      font-size: clamp(2.6rem, 7vw, 5rem);
-      font-weight: 800;
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.25rem;
-    }
-
-    .hero h1 .dim { color: var(--muted); }
-    .hero h1 .hi { color: var(--accent); }
-
-    .hero-sub {
-      font-family: var(--mono);
-      font-size: 0.88rem;
-      color: var(--muted);
-      line-height: 1.8;
-      max-width: 480px;
-    }
-
-    .hero-sub strong { color: var(--accent2); font-weight: 400; }
-
-    /* ── SECTION HEADER ── */
-    .section-header {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 3rem 1.5rem;
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      border-bottom: 1px solid var(--border);
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.3s forwards;
-    }
-
-    .section-header h2 {
-      font-family: var(--sans);
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      text-decoration: underline;
-      text-underline-offset: 6px;
-      text-decoration-color: var(--accent);
-    }
-
-    .project-count {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      border: 1px dashed var(--border);
-      padding: 0.2rem 0.6rem;
-      border-radius: 100px;
-    }
-
-    /* ── PROJECT LIST ── */
-    .project-list {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 3rem 6rem;
-    }
-
-    .project-row {
-      display: grid;
-      grid-template-columns: 180px 1fr auto;
-      gap: 2rem;
-      align-items: center;
-      padding: 2rem 0;
-      border-bottom: 1px solid var(--border);
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
-      text-decoration: none;
-      color: inherit;
-      transition: background 0.2s;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .project-row:nth-child(1) { animation-delay: 0.4s; }
-    .project-row:nth-child(2) { animation-delay: 0.5s; }
-    .project-row:nth-child(3) { animation-delay: 0.6s; }
-    .project-row:nth-child(4) { animation-delay: 0.7s; }
-    .project-row:nth-child(5) { animation-delay: 0.8s; }
-
-    .project-row:hover .project-thumb { border-color: var(--accent); }
-    .project-row:hover .project-arrow { background: var(--accent); color: #000; transform: rotate(0deg); }
-    .project-row:hover .project-title { color: var(--accent); }
-
-    /* THUMBNAIL */
-    .project-thumb {
-      width: 180px;
-      height: 120px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      background: var(--surface);
-      flex-shrink: 0;
-      transition: border-color 0.25s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    /* Generative SVG art for each project */
-    .thumb-art {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* PROJECT BODY */
-    .project-body {}
-
-    .project-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.6rem;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      border: 1px solid rgba(96, 208, 240, 0.25);
-      padding: 0.18rem 0.55rem;
-      border-radius: 3px;
-    }
-
-    .project-title {
-      font-family: var(--sans);
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-      transition: color 0.2s;
-    }
-
-    .project-desc {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--muted);
-      line-height: 1.75;
-      max-width: 460px;
-    }
-
-    /* ARROW */
-    .project-arrow {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      color: var(--muted);
-      flex-shrink: 0;
-      transition: background 0.2s, color 0.2s, transform 0.2s;
-      transform: rotate(-45deg);
-    }
-
-
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 3rem;
-      max-width: 860px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-left {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    .footer-left strong { color: var(--accent); font-weight: 400; }
-
-    .footer-claude {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      nav { padding: 1rem 1.25rem; }
-      .nav-links { display: none; }
-      .hero, .section-header, .project-list, footer { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .project-row { grid-template-columns: 100px 1fr auto; gap: 1rem; }
-      .project-thumb { width: 100px; height: 70px; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
@@ -307,8 +13,8 @@
   <nav>
     <a href="#" class="nav-logo">vibe<span>.</span>coded</a>
     <ul class="nav-links">
-      <li><a href="#projects" class="active">Projects</a></li>
-      <li><a href="#">About</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#">Blog</a></li>
     </ul>
   </nav>
@@ -325,6 +31,34 @@
       No boilerplate. No templates. Just prompts and vibes.
     </p>
   </header>
+
+  <!-- ABOUT SECTION -->
+  <section class="about-section" id="about">
+    <div class="section-header">
+      <h2>About</h2>
+    </div>
+    <div class="about-body">
+      <div class="about-text">
+        <p>Hey — I'm a builder who uses Claude to vibe code projects from scratch. No frameworks forced on me, no boilerplate, just a clear idea and a conversation with an AI that can write the whole thing.</p>
+        <p>This site is a living portfolio of everything I've shipped. Each project started as a prompt and ended as something real — deployed, functional, and built faster than any traditional workflow would allow.</p>
+        <p>The goal isn't perfection. It's momentum. Ship something, learn from it, build the next one.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-number">3</span>
+          <span class="stat-label">// projects shipped</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">1</span>
+          <span class="stat-label">// tool used</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">// vibes</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- PROJECTS SECTION HEADER -->
   <div class="section-header" id="projects">
